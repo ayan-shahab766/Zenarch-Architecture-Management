@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from "next/image";
 import { FaInstagram, FaLinkedinIn, FaFacebook } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import { API_BASE } from "@/utils/api";
 import axios from 'axios';
 
 const Footer = () => {
@@ -17,7 +18,7 @@ const Footer = () => {
     useEffect(() => {
         const fetchSettings = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/settings');
+                const { data } = await axios.get(`${API_BASE}/api/settings`);
                 setSettings(data);
             } catch (error) {
                 console.error('Error fetching footer settings:', error);
