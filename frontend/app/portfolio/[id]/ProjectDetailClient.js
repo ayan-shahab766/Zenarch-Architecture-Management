@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE } from "@/utils/api";
 
 export default function ProjectDetailClient({ project }) {
 
@@ -9,11 +10,11 @@ export default function ProjectDetailClient({ project }) {
 
   // If images are stored in backend/uploads, prepend server URL
   const coverImageURL = project.coverImage.startsWith("/uploads")
-    ? `http://localhost:5000${project.coverImage}`
+    ? `${API_BASE}${project.coverImage}`
     : project.coverImage;
 
   const galleryURLs = project.gallery.map((img) =>
-    img.startsWith("/uploads") ? `http://localhost:5000${img}` : img
+    img.startsWith("/uploads") ? `${API_BASE}${img}` : img
   );
 
   return (

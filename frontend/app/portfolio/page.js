@@ -75,7 +75,7 @@ export default function Portfolio() {
               <div className="absolute inset-0 bg-dark/20 group-hover:bg-transparent transition-all duration-500 z-10"></div>
               <div 
                 className="h-[400px] w-full bg-cover bg-center transform group-hover:scale-105 transition-transform duration-700"
-                style={{ backgroundImage: `url("http://localhost:5000${project.coverImage}")` }}
+                style={{ backgroundImage: `url("${API_BASE}${project.coverImage}")` }}
               ></div>
               <div className="absolute bottom-0 left-0 right-0 p-6 z-20 bg-gradient-to-t from-dark to-transparent">
                 <span className="text-gold text-[10px] font-bold uppercase tracking-wider mb-2 block">{project.category?.name || project.category}</span>

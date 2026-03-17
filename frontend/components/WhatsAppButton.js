@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { API_BASE } from "@/utils/api";
 import axios from "axios";
 
 const WhatsAppButton = () => {
@@ -10,7 +11,7 @@ const WhatsAppButton = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/settings");
+        const { data } = await axios.get(`${API_BASE}/api/settings`);
         setNumber(data.whatsapp || "");
       } catch (err) {
         console.error("Failed to fetch WhatsApp number:", err);

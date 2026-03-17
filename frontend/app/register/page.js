@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { API_BASE } from "@/utils/api";
 import axios from 'axios';
 
 export default function Register() {
@@ -22,7 +23,7 @@ export default function Register() {
     }
 
     try {
-      const { data } = await axios.post('http://localhost:5000/api/users', {
+      const { data } = await axios.post(`${API_BASE}/api/users`, {
         name,
         email,
         password,

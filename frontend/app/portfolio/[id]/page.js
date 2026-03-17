@@ -1,5 +1,6 @@
 // app/portfolio/[id]/page.js
 import ProjectDetailClient from './ProjectDetailClient';
+import { API_BASE } from "@/utils/api";
 
 export default async function Page(routeParams) {
   // Await params before destructuring
@@ -7,7 +8,7 @@ export default async function Page(routeParams) {
   const { id } = params;
 
   // Fetch project data
-  const res = await fetch(`http://localhost:5000/api/projects/${id}`, { cache: 'no-store' });
+  const res = await fetch(`${API_BASE}/api/projects/${id}`, { cache: 'no-store' });
   if (!res.ok) {
     return <p>Project not found</p>;
   }
