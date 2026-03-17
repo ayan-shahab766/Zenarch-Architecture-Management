@@ -1,0 +1,35 @@
+# Root .gitignore for Zenarch monorepo
+
+# Dependencies
+node_modules/
+
+# Environment files (very important)
+.env
+.env.*
+
+# Build folders
+.next/
+dist/
+build/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+
+# Backend uploads
+# backend/uploads/
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc
+*.pem

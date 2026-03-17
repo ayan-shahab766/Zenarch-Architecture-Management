@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #d4af37;
+  --color-gold-light: #f8e5b4;
+  --color-gold-dark: #a87e1f;
+  --color-burgundy: #4a0404;
+  --color-burgundy-dark: #220202;
+  --color-burgundy-light: #7a0b0b;
+  --color-dark: #000000;
+  --color-dark-light: #0f0f0f;
+  --color-dark-lighter: #1a1a1a;
+}
+
+@layer base {
+  :root {
+    --gold: #d4af37;
+    --burgundy: #4a0404;
+    --dark: #000000;
+  }
+
+  body {
+    background-color: var(--dark);
+    /* Subtle radial glow from center top imitating the logo glow */
+    background-image: radial-gradient(circle at 50% 30%, #290404 0%, #000000 70%);
+    background-attachment: fixed;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gold text-dark font-semibold py-3 px-8 rounded-sm transition-all duration-300 hover:bg-gold-light;
+  }
+  
+  .btn-outline {
+    @apply border border-gold text-gold font-semibold py-3 px-8 rounded-sm transition-all duration-300 hover:bg-gold hover:text-dark;
+  }
+  
+  .glass-card {
+    @apply bg-dark-light/80 backdrop-blur-md border border-white/10 p-6 rounded-lg;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
+}
+
+/* Page Transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms, transform 400ms;
+}
+.page-transition-exit {
+  opacity: 1;
+}
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 400ms;
+}
