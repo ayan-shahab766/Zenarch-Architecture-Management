@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { API_BASE } from "utils/api";
 import axios from 'axios';
 
 export default function Portfolio() {
@@ -16,7 +17,7 @@ export default function Portfolio() {
     // load categories to populate filters
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/categories');
+        const res = await axios.get(`${API_BASE}/api/categories`);
         setCategories(res.data);
       } catch (err) {
         console.error('error loading categories', err);
@@ -33,7 +34,7 @@ export default function Portfolio() {
           const cat = categories.find((c) => c.name === selectedFilter);
           if (cat) query = `?category=${cat._id}`;
         }
-        const res = await axios.get(`http://localhost:5000/api/projects${query}`);
+        const res = await axios.get(`${API_BASE}/api/projects${query}`);
         setProjects(res.data);
       } catch (err) {
         console.error(err);
