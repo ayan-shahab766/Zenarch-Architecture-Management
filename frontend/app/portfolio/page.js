@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { API_BASE } from "utils/api";
+import { API_BASE } from "@/utils/api";
 import axios from 'axios';
 
 export default function Portfolio() {
