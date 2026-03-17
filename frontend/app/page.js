@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from "next/image";
+import { API_BASE } from "@/utils/api";
 import * as motion from 'framer-motion/client';
 
 export default function Home() {
