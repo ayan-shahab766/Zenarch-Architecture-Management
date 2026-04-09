@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { API_BASE } from "@/utils/api";
 import axios from "axios";
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function AdminSettings() {
 
@@ -14,6 +15,7 @@ export default function AdminSettings() {
     facebook: "",
     linkedin: ""
   });
+  const [loading, setLoading] = useState(true);
 
   const [status, setStatus] = useState("");
 
@@ -28,6 +30,8 @@ export default function AdminSettings() {
 
     } catch (error) {
       console.error("Failed to load settings", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +63,10 @@ export default function AdminSettings() {
   useEffect(() => {
     fetchSettings();
   }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>

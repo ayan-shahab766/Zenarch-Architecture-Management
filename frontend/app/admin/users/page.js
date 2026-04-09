@@ -2,9 +2,11 @@
 import { useState, useEffect } from "react";
 import { API_BASE } from "@/utils/api";
 import axios from "axios";
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchUsers = async () => {
     try {
@@ -22,6 +24,8 @@ export default function AdminUsers() {
       setUsers(data);
     } catch (error) {
       console.error("Fetch users error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,6 +75,10 @@ export default function AdminUsers() {
       alert("Failed to promote user");
     }
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>

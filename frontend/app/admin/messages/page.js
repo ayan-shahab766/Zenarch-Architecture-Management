@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { API_BASE } from "@/utils/api";
 import axios from "axios";
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function AdminMessages() {
 
@@ -24,10 +25,11 @@ export default function AdminMessages() {
       );
 
       setMessages(data);
-      setLoading(false);
 
     } catch (error) {
       console.error("Failed to fetch messages", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,6 +80,10 @@ export default function AdminMessages() {
   useEffect(() => {
     fetchMessages();
   }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>

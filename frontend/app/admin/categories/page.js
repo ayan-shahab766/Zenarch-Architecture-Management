@@ -2,11 +2,13 @@
 import { useState, useEffect } from "react";
 import { API_BASE } from "@/utils/api";
 import axios from "axios";
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function AdminCategories() {
 
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchCategories();
@@ -18,6 +20,8 @@ export default function AdminCategories() {
       setCategories(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
+    } finally {
+      setLoading(false);
     }
   };
   const submitHandler = async (e) => {
@@ -62,6 +66,10 @@ export default function AdminCategories() {
       console.error("Delete failed:", error);
     }
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>

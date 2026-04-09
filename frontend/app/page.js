@@ -5,9 +5,11 @@ import { API_BASE } from "@/utils/api";
 import * as motion from 'framer-motion/client';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function Home() {
   const [featuredProjects, setFeaturedProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchFeaturedProjects = async () => {
@@ -16,10 +18,17 @@ export default function Home() {
         setFeaturedProjects(data);
       } catch (error) {
         console.error('Error fetching featured projects:', error);
+        setFeaturedProjects([]); // Set empty array on error
+      } finally {
+        setLoading(false);
       }
     };
     fetchFeaturedProjects();
   }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
   return (
     <div className="w-full">
       {/* Hero Section */}
@@ -75,50 +84,20 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {featuredProjects.length > 0 ? (
-              featuredProjects.slice(0, 2).map((project) => (
-                <Link key={project._id} href={`/portfolio/${project._id}`} className="group block overflow-hidden relative rounded-sm">
-                  <div className="absolute inset-0 bg-dark/20 group-hover:bg-transparent transition-all duration-500 z-10"></div>
-                  <div
-                    className="h-[500px] w-full bg-cover bg-center transform group-hover:scale-105 transition-transform duration-700"
-                    style={{ backgroundImage: `url("${API_BASE}${project.coverImage}")` }}
-                  ></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-8 z-20 bg-gradient-to-t from-dark to-transparent">
-                    <span className="text-gold text-xs font-bold uppercase tracking-wider mb-2 block">{project.category?.name || 'Project'}</span>
-                    <h3 className="text-2xl font-playfair text-white group-hover:text-gold transition-colors">{project.title}</h3>
-                    <p className="text-white/70 text-sm mt-2 font-light">{project.location}</p>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <>
-                {/* Fallback placeholder cards */}
-                <div className="group block overflow-hidden relative rounded-sm">
-                  <div className="absolute inset-0 bg-dark/20 transition-all duration-500 z-10"></div>
-                  <div
-                    className="h-[500px] w-full bg-cover bg-center"
-                    style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80")' }}
-                  ></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-8 z-20 bg-gradient-to-t from-dark to-transparent">
-                    <span className="text-gold text-xs font-bold uppercase tracking-wider mb-2 block">Residential</span>
-                    <h3 className="text-2xl font-playfair text-white">Featured Project Coming Soon</h3>
-                    <p className="text-white/70 text-sm mt-2 font-light">Location TBD</p>
-                  </div>
+            {featuredProjects.slice(0, 2).map((project) => (
+              <Link key={project._id} href={`/portfolio/${project._id}`} className="group block overflow-hidden relative rounded-sm">
+                <div className="absolute inset-0 bg-dark/20 group-hover:bg-transparent transition-all duration-500 z-10"></div>
+                <div
+                  className="h-[500px] w-full bg-cover bg-center transform group-hover:scale-105 transition-transform duration-700"
+                  style={{ backgroundImage: `url("${API_BASE}${project.coverImage}")` }}
+                ></div>
+                <div className="absolute bottom-0 left-0 right-0 p-8 z-20 bg-gradient-to-t from-dark to-transparent">
+                  <span className="text-gold text-xs font-bold uppercase tracking-wider mb-2 block">{project.category?.name || 'Project'}</span>
+                  <h3 className="text-2xl font-playfair text-white group-hover:text-gold transition-colors">{project.title}</h3>
+                  <p className="text-white/70 text-sm mt-2 font-light">{project.location}</p>
                 </div>
-                <div className="group block overflow-hidden relative rounded-sm">
-                  <div className="absolute inset-0 bg-dark/20 transition-all duration-500 z-10"></div>
-                  <div
-                    className="h-[500px] w-full bg-cover bg-center"
-                    style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80")' }}
-                  ></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-8 z-20 bg-gradient-to-t from-dark to-transparent">
-                    <span className="text-gold text-xs font-bold uppercase tracking-wider mb-2 block">Commercial</span>
-                    <h3 className="text-2xl font-playfair text-white">Featured Project Coming Soon</h3>
-                    <p className="text-white/70 text-sm mt-2 font-light">Location TBD</p>
-                  </div>
-                </div>
-              </>
-            )}
+              </Link>
+            ))}
           </div>
 
           <div className="mt-12 text-center md:hidden">

@@ -4,44 +4,56 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { API_BASE } from "@/utils/api";
 import axios from 'axios';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function Portfolio() {
   const [projects, setProjects] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // build list of filter labels; start with "All"
   const filters = ['All', ...categories.map((c) => c.name)];
 
   useEffect(() => {
-    // load categories to populate filters
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/api/categories`);
-        setCategories(res.data);
+        // load categories to populate filters
+        const categoriesRes = await axios.get(`${API_BASE}/api/categories`);
+        setCategories(categoriesRes.data);
+
+        // load initial projects
+        const projectsRes = await axios.get(`${API_BASE}/api/projects`);
+        setProjects(projectsRes.data);
       } catch (err) {
-        console.error('error loading categories', err);
+        console.error('error loading data', err);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchCategories();
+    fetchData();
   }, []);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        let query = '';
-        if (selectedFilter !== 'All') {
+    if (!loading && selectedFilter !== 'All') {
+      const fetchFilteredProjects = async () => {
+        try {
           const cat = categories.find((c) => c.name === selectedFilter);
-          if (cat) query = `?category=${cat._id}`;
+          if (cat) {
+            const res = await axios.get(`${API_BASE}/api/projects?category=${cat._id}`);
+            setProjects(res.data);
+          }
+        } catch (err) {
+          console.error(err);
         }
-        const res = await axios.get(`${API_BASE}/api/projects${query}`);
-        setProjects(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchProjects();
-  }, [selectedFilter, categories]); // Re-fetch when filter or categories change
+      };
+      fetchFilteredProjects();
+    }
+  }, [selectedFilter, categories, loading]);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="pt-24 min-h-screen">

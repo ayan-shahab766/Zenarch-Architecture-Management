@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { API_BASE } from "@/utils/api";
 import axios from "axios";
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -11,6 +12,7 @@ export default function AdminDashboard() {
     unreadMessages: 0,
     recentMessages: []
   });
+  const [loading, setLoading] = useState(true);
 
   const [selectedMessage, setSelectedMessage] = useState(null); // Message to view
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,6 +28,8 @@ export default function AdminDashboard() {
       setStats(data);
     } catch (error) {
       console.error("Dashboard fetch failed", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,6 +54,10 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchDashboard();
   }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>

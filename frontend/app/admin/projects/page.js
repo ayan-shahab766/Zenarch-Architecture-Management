@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { API_BASE } from "@/utils/api";
 import axios from "axios";
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState([]);
@@ -200,6 +201,10 @@ export default function AdminProjects() {
     }
     setSaving(false);
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>

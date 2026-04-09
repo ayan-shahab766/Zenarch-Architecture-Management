@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { API_BASE } from "@/utils/api";
 import axios from 'axios';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function AdminGallery() {
   const [images, setImages] = useState([]);
@@ -69,6 +70,10 @@ export default function AdminGallery() {
       alert('Delete failed.');
     }
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>
