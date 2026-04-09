@@ -6,10 +6,12 @@ const {
     createProject,
     updateProject,
     deleteProject,
+    getFeaturedProjects,
 } = require('../controllers/projectController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 router.route('/').get(getProjects).post(protect, admin, createProject);
+router.route('/featured').get(getFeaturedProjects);
 router
     .route('/:id')
     .get(getProjectById)

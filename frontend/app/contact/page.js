@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
+import { API_BASE } from "@/utils/api";
 import axios from 'axios';
 
 export default function Contact() {
@@ -14,7 +15,7 @@ export default function Contact() {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/settings');
+        const { data } = await axios.get(`${API_BASE}/api/settings`);
         setSettings(data);
       } catch (error) {
         console.error('Error fetching settings:', error);
@@ -27,7 +28,7 @@ export default function Contact() {
     e.preventDefault();
     setStatus('Sending...');
     try {
-      await axios.post('http://localhost:5000/api/messages', formData);
+      await axios.post(`${API_BASE}/api/messages`, formData);
       setStatus('Message sent successfully! We will contact you soon.');
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {

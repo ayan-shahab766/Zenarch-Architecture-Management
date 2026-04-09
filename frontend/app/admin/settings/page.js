@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_BASE } from "@/utils/api";
 import axios from "axios";
 
 export default function AdminSettings() {
@@ -20,7 +21,7 @@ export default function AdminSettings() {
     try {
 
       const { data } = await axios.get(
-        "http://localhost:5000/api/settings"
+        `${API_BASE}/api/settings`
       );
 
       setSettings(data);
@@ -40,7 +41,7 @@ export default function AdminSettings() {
       setStatus("Saving...");
 
       await axios.put(
-        "http://localhost:5000/api/settings",
+        `${API_BASE}/api/settings`,
         settings,
         {
           headers: { Authorization: `Bearer ${token}` }

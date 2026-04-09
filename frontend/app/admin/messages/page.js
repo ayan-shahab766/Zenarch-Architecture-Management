@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_BASE } from "@/utils/api";
 import axios from "axios";
 
 export default function AdminMessages() {
@@ -16,7 +17,7 @@ export default function AdminMessages() {
       const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
       const { data } = await axios.get(
-        "http://localhost:5000/api/messages",
+        `${API_BASE}/api/messages`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -34,7 +35,7 @@ export default function AdminMessages() {
     try {
       // Mark as read
       if (!msg.read) {
-        await axios.put(`http://localhost:5000/api/messages/${msg._id}/read`);
+        await axios.put(`${API_BASE}/api/messages/${msg._id}/read`);
       }
       setMessages((prev) =>
         prev.map((m) =>
@@ -61,7 +62,7 @@ export default function AdminMessages() {
       const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
       await axios.delete(
-        `http://localhost:5000/api/messages/${id}`,
+        `${API_BASE}/api/messages/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

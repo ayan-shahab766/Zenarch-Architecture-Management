@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { API_BASE } from "@/utils/api";
 import axios from "axios";
 
 export default function AdminProjects() {
@@ -17,6 +18,7 @@ export default function AdminProjects() {
     area: "",
     architect: "",
     gallery: [],
+    featured: false,
   });
   const [newGalleryImages, setNewGalleryImages] = useState([]);
   const [coverFile, setCoverFile] = useState(null);
@@ -25,7 +27,7 @@ export default function AdminProjects() {
   const fetchProjects = async () => {
     try {
       const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
-      const { data } = await axios.get("http://localhost:5000/api/projects", {
+      const { data } = await axios.get(`${API_BASE}/api/projects`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProjects(data);
@@ -44,7 +46,7 @@ export default function AdminProjects() {
       try {
         const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
         const { data } = await axios.get(
-          "http://localhost:5000/api/categories",
+          `${API_BASE}/api/categories`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setCategories(data);
@@ -86,6 +88,7 @@ export default function AdminProjects() {
       area: project.area || "",
       architect: project.architect || "",
       gallery: project.gallery || [],
+      featured: project.featured || false,
     });
     setNewGalleryImages([]);
     setCoverFile(null);
@@ -113,7 +116,7 @@ export default function AdminProjects() {
       try {
         const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
         const filename = imgPath.split("/").pop();
-        await axios.delete(`http://localhost:5000/api/upload/${filename}`, {
+        await axios.delete(`${API_BASE}/api/upload/${filename}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
       } catch (err) {
@@ -139,7 +142,7 @@ export default function AdminProjects() {
         const coverForm = new FormData();
         coverForm.append("image", coverFile);
         const { data: uploadedCover } = await axios.post(
-          "http://localhost:5000/api/upload",
+          `${API_BASE}/api/upload`,
           coverForm,
           {
             headers: {
@@ -157,7 +160,7 @@ export default function AdminProjects() {
         const galleryForm = new FormData();
         newGalleryImages.forEach((file) => galleryForm.append("images", file));
         const { data } = await axios.post(
-          "http://localhost:5000/api/upload/multiple",
+          `${API_BASE}/api/upload/multiple`,
           galleryForm,
           {
             headers: {
@@ -177,13 +180,13 @@ export default function AdminProjects() {
 
       if (editingProject?._id) {
         await axios.put(
-          `http://localhost:5000/api/projects/${editingProject._id}`,
+          `${API_BASE}/api/projects/${editingProject._id}`,
           payload,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         await axios.post(
-          `http://localhost:5000/api/projects`,
+          `${API_BASE}/api/projects`,
           payload,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -328,7 +331,7 @@ export default function AdminProjects() {
                 <label className="text-white">Cover Image</label>
                 {form.coverImage && (
                   <img
-                    src={`http://localhost:5000${form.coverImage}`}
+                    src={`${API_BASE}${form.coverImage}`}
                     className="w-32 h-32 object-cover mb-2 rounded"
                   />
                 )}
@@ -355,13 +358,25 @@ export default function AdminProjects() {
                   onChange={handleInputChange}
                 />
 
+                {/* Featured checkbox */}
+                <label className="flex items-center text-white">
+                  <input
+                    type="checkbox"
+                    name="featured"
+                    checked={form.featured}
+                    onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+                    className="mr-2"
+                  />
+                  Featured Project
+                </label>
+
                 {/* Gallery */}
                 {form.gallery.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {form.gallery.map((img, i) => (
                       <div key={i} className="relative">
                         <img
-                          src={`http://localhost:5000${img}`}
+                          src={`${API_BASE}${img}`}
                           className="w-20 h-20 object-cover rounded"
                         />
                         <button

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { API_BASE } from "@/utils/api";
 import axios from "axios";
 
 export default function AdminCategories() {
@@ -13,7 +14,7 @@ export default function AdminCategories() {
 
   const fetchCategories = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/categories");
+      const { data } = await axios.get(`${API_BASE}/api/categories`);
       setCategories(data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -25,7 +26,7 @@ export default function AdminCategories() {
     try {
       const { token } = JSON.parse(localStorage.getItem('userInfo') || '{}');
       const res = await axios.post(
-        "http://localhost:5000/api/categories",
+        `${API_BASE}/api/categories`,
         { name },
         {
           headers: {
@@ -47,7 +48,7 @@ export default function AdminCategories() {
     try {
       const { token } = JSON.parse(localStorage.getItem('userInfo') || '{}');
       await axios.delete(
-        `http://localhost:5000/api/categories/${id}`,
+        `${API_BASE}/api/categories/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_BASE } from "@/utils/api";
 import axios from "axios";
 
 export default function AdminDashboard() {
@@ -18,7 +19,7 @@ export default function AdminDashboard() {
   const fetchDashboard = async () => {
     try {
       const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
-      const { data } = await axios.get("http://localhost:5000/api/dashboard", {
+      const { data } = await axios.get(`${API_BASE}/api/dashboard`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -33,7 +34,7 @@ export default function AdminDashboard() {
     try {
       // Mark as read
       if (!msg.read) {
-        await axios.put(`http://localhost:5000/api/messages/${msg._id}/read`);
+        await axios.put(`${API_BASE}/api/messages/${msg._id}/read`);
       }
 
       // Open modal with full message

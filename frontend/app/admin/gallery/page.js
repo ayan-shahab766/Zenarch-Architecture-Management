@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
+import { API_BASE } from "@/utils/api";
 import axios from 'axios';
 
 export default function AdminGallery() {
@@ -10,7 +11,7 @@ export default function AdminGallery() {
     try {
       const { token } = JSON.parse(localStorage.getItem('userInfo') || '{}');
       console.log('Sending token:', token); // debug
-      const { data } = await axios.get('http://localhost:5000/api/upload', {
+      const { data } = await axios.get(`${API_BASE}/api/upload`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setImages(data);
@@ -40,7 +41,7 @@ export default function AdminGallery() {
     try {
       setLoading(true);
       const { token } = JSON.parse(localStorage.getItem('userInfo') || '{}');
-      await axios.post('http://localhost:5000/api/upload/multiple', formData, {
+      await axios.post(`${API_BASE}/api/upload/multiple`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
@@ -59,7 +60,7 @@ export default function AdminGallery() {
 
     try {
       const { token } = JSON.parse(localStorage.getItem('userInfo') || '{}');
-      await axios.delete(`http://localhost:5000/api/upload/${filename}`, {
+      await axios.delete(`${API_BASE}/api/upload/${filename}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchImages();
@@ -87,12 +88,12 @@ export default function AdminGallery() {
           <div key={img.id || img.name} className="group relative overflow-hidden rounded-sm bg-dark-light border border-white/5 aspect-square">
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-              style={{ backgroundImage: `url("${img.url.startsWith('http') ? img.url : `http://localhost:5000${img.url}`}")` }}
+              style={{ backgroundImage: `url("${img.url.startsWith('http') ? img.url : `${API_BASE}${img.url}`}")` }}
             ></div>
             <div className="absolute inset-0 bg-dark/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4">
               <span className="text-xs text-white text-center mb-3 truncate w-full">{img.name}</span>
               <div className="flex gap-2">
-                <button onClick={() => navigator.clipboard.writeText(`http://localhost:5000${img.url}`)} className="bg-white/20 hover:bg-white/40 text-white p-2 rounded-full backdrop-blur-sm transition-colors" title="Copy URL">
+                <button onClick={() => navigator.clipboard.writeText(`${API_BASE}${img.url}`)} className="bg-white/20 hover:bg-white/40 text-white p-2 rounded-full backdrop-blur-sm transition-colors" title="Copy URL">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
                 </button>
                 <button onClick={() => handleDelete(img.name)} className="bg-burgundy/80 hover:bg-burgundy text-white p-2 rounded-full backdrop-blur-sm transition-colors" title="Delete Image">

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { API_BASE } from "@/utils/api";
 import axios from "axios";
 
 export default function AdminUsers() {
@@ -10,7 +11,7 @@ export default function AdminUsers() {
       const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
       const { data } = await axios.get(
-        "http://localhost:5000/api/users",
+        `${API_BASE}/api/users`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +36,7 @@ export default function AdminUsers() {
       const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
       await axios.delete(
-        `http://localhost:5000/api/users/${id}`,
+        `${API_BASE}/api/users/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,7 +56,7 @@ export default function AdminUsers() {
       const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
       await axios.put(
-        `http://localhost:5000/api/users/${id}/role`,
+        `${API_BASE}/api/users/${id}/role`,
         { role: "admin" },
         {
           headers: {

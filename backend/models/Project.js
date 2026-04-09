@@ -37,6 +37,10 @@ const projectSchema = mongoose.Schema(
         architect: {
             type: String,
         },
+        featured: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,

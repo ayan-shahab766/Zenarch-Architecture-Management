@@ -1,9 +1,16 @@
 const Project = require('../models/Project');
 
-// @desc    Fetch all projects
-// @route   GET /api/projects
+// @desc    Fetch featured projects
+// @route   GET /api/projects/featured
 // @access  Public
-const getProjects = async (req, res) => {
+const getFeaturedProjects = async (req, res) => {
+    try {
+        const projects = await Project.find({ featured: true }).populate('category', 'name slug').limit(4);
+        res.json(projects);
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
     try {
         const categoryFilter = req.query.category ? { category: req.query.category } : {};
         const projects = await Project.find({ ...categoryFilter }).populate('category', 'name slug');
@@ -44,6 +51,7 @@ const createProject = async (req, res) => {
             coverImage: req.body.coverImage || '/uploads/sample.jpg',
             gallery: req.body.gallery || [],
             architect: req.body.architect || 'Zenarch Studio',
+            featured: req.body.featured || false,
         });
 
         let createdProject = await project.save();
@@ -70,6 +78,7 @@ const updateProject = async (req, res) => {
             coverImage,
             gallery,
             architect,
+            featured,
         } = req.body;
 
         const project = await Project.findById(req.params.id);
@@ -84,6 +93,7 @@ const updateProject = async (req, res) => {
             project.coverImage = coverImage || project.coverImage;
             project.gallery = gallery || project.gallery;
             project.architect = architect || project.architect;
+            project.featured = featured !== undefined ? featured : project.featured;
 
             let updatedProject = await project.save();
             updatedProject = await updatedProject.populate('category', 'name slug');
@@ -121,4 +131,5 @@ module.exports = {
     createProject,
     updateProject,
     deleteProject,
+    getFeaturedProjects,
 };
