@@ -22,6 +22,9 @@ const greatVibes = Great_Vibes({
 export const metadata = {
   title: 'Zenarch | Space You Deserves',
   description: 'Premium architecture portfolio and residential design studio.',
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({ children }) {

@@ -30,7 +30,7 @@ const Footer = () => {
     return (
         <footer className="bg-dark-light pt-20 pb-10 border-t border-white/5">
             <div className="container mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
                     <div className="md:col-span-1 border-l border-gold pl-6">
                         <Link href="/" className="flex flex-col items-start mb-6 group">
                             <Image
@@ -85,7 +85,7 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    <div>
+                    {/* <div>
                         <h4 className="font-playfair text-lg text-white mb-6 uppercase tracking-wider">Newsletter</h4>
                         <p className="text-gray-400 text-sm mb-4">Subscribe to our newsletter for the latest updates on our projects.</p>
                         <form className="flex">
@@ -98,14 +98,14 @@ const Footer = () => {
                                 &rarr;
                             </button>
                         </form>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
                     <p className="text-gray-500 text-xs">&copy; {new Date().getFullYear()} Zenarch Studio. All rights reserved.</p>
                     <div className="flex space-x-6 mt-4 md:mt-0">
-                        <Link href="/privacy" className="text-gray-500 hover:text-white text-xs transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="text-gray-500 hover:text-white text-xs transition-colors">Terms of Service</Link>
+                        <Link href="/privacy-policy" className="text-gray-500 hover:text-white text-xs transition-colors">Privacy Policy</Link>
+                        <Link href="/terms-and-conditions" className="text-gray-500 hover:text-white text-xs transition-colors">Terms of Service</Link>
                     </div>
                 </div>
             </div>
