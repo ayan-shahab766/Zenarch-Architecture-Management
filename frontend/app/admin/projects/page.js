@@ -39,6 +39,21 @@ export default function AdminProjects() {
     setLoading(false);
   };
 
+  const deleteProject = async (id) => {
+    if (!confirm("Delete this project?")) return;
+
+    try {
+      const { token } = JSON.parse(localStorage.getItem("userInfo") || "{}");
+      await axios.delete(`${API_BASE}/api/projects/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchProjects(); // Refresh the list
+    } catch (error) {
+      console.error("Delete failed:", error);
+      alert("Failed to delete project");
+    }
+  };
+
   // fetch categories
   useEffect(() => {
     fetchProjects();
@@ -196,8 +211,12 @@ export default function AdminProjects() {
       setEditingProject(null);
       fetchProjects();
     } catch (err) {
-      console.error("save error", err.response?.data || err);
-      alert(err.response?.data?.message || "Failed to save project");
+      console.error("save error", err);
+      if (err.code === 'NETWORK_ERROR' || err.message === 'Network Error') {
+        alert("Network error: Please check your connection and try again. The backend may be sleeping and needs a moment to wake up.");
+      } else {
+        alert(err.response?.data?.message || "Failed to save project. Please try again.");
+      }
     }
     setSaving(false);
   };
@@ -253,7 +272,7 @@ export default function AdminProjects() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(p._id)}
+                      onClick={() => deleteProject(p._id)}
                       className="text-burgundy hover:text-burgundy-light transition-colors"
                     >
                       Delete

@@ -52,6 +52,12 @@ export default function AdminMessages() {
       fetchMessages(); // Refresh messages (unread count)
     } catch (error) {
       console.error("Error opening message", error);
+      if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error') {
+        alert("Network error: Unable to mark message as read. The backend may be sleeping.");
+      }
+      // Still open the modal even if marking as read fails
+      setSelectedMessage(msg);
+      setModalOpen(true);
     }
   };
 
@@ -74,6 +80,11 @@ export default function AdminMessages() {
 
     } catch (error) {
       console.error("Delete failed", error);
+      if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error') {
+        alert("Network error: Please check your connection and try again. The backend may be sleeping.");
+      } else {
+        alert("Failed to delete message. Please try again.");
+      }
     }
   };
 

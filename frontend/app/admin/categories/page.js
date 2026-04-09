@@ -44,7 +44,12 @@ export default function AdminCategories() {
       fetchCategories();
 
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to create category");
+      console.error("Create category error:", error);
+      if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error') {
+        alert("Network error: Please check your connection and try again. The backend may be sleeping.");
+      } else {
+        alert(error.response?.data?.message || "Failed to create category. Please try again.");
+      }
     }
   };
 
@@ -64,6 +69,11 @@ export default function AdminCategories() {
 
     } catch (error) {
       console.error("Delete failed:", error);
+      if (error.code === 'NETWORK_ERROR' || error.message === 'Network Error') {
+        alert("Network error: Please check your connection and try again. The backend may be sleeping.");
+      } else {
+        alert("Failed to delete category. Please try again.");
+      }
     }
   };
 
