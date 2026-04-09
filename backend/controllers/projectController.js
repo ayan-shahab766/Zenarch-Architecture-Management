@@ -3,17 +3,31 @@ const Project = require('../models/Project');
 // @desc    Fetch featured projects
 // @route   GET /api/projects/featured
 // @access  Public
+// Get Featured Projects
 const getFeaturedProjects = async (req, res) => {
     try {
-        const projects = await Project.find({ featured: true }).populate('category', 'name slug').limit(4);
+        const projects = await Project
+            .find({ featured: true })
+            .populate('category', 'name slug')
+            .limit(4);
+
         res.json(projects);
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
     }
 };
+
+// Get All Projects (with optional category filter)
+const getProjects = async (req, res) => {
     try {
-        const categoryFilter = req.query.category ? { category: req.query.category } : {};
-        const projects = await Project.find({ ...categoryFilter }).populate('category', 'name slug');
+        const categoryFilter = req.query.category
+            ? { category: req.query.category }
+            : {};
+
+        const projects = await Project
+            .find({ ...categoryFilter })
+            .populate('category', 'name slug');
+
         res.json(projects);
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
